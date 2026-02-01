@@ -25,19 +25,19 @@ const GUARD_LENGTH_THRESHOLDS: { maxScopeLength: number; guardLength: GuardLengt
 /**
  * Scope height recommendations based on objective lens diameter
  * Larger objectives require higher mounts to clear the barrel/rail
+ * Heights: 1 1/2", 1 3/4", 2"
  */
 const HEIGHT_THRESHOLDS: { maxObjective: number; height: ScopeHeight }[] = [
-  { maxObjective: 28, height: "low" },
-  { maxObjective: 44, height: "medium" },
-  { maxObjective: 52, height: "high" },
-  { maxObjective: Infinity, height: "extra-high" },
+  { maxObjective: 40, height: "1.5" },   // 1 1/2" - Standard
+  { maxObjective: 50, height: "1.75" },  // 1 3/4" - Larger objectives
+  { maxObjective: Infinity, height: "2" }, // 2" - Extra-large objectives
 ];
 
 /**
  * Maps a scope's overall length to the appropriate ScopeSecure guard length
  * 
  * @param scopeLength - The scope's overall length in inches
- * @returns The recommended guard length, or "custom" if scope is too long
+ * @returns The recommended guard length (longest available for oversized scopes)
  */
 export function getGuardLength(scopeLength: number): GuardLength {
   for (const threshold of GUARD_LENGTH_THRESHOLDS) {
@@ -45,8 +45,8 @@ export function getGuardLength(scopeLength: number): GuardLength {
       return threshold.guardLength;
     }
   }
-  // If scope is longer than 17.5", needs custom order
-  return "custom";
+  // If scope is longer than 17.5", recommend the longest available
+  return "17";
 }
 
 /**
@@ -55,14 +55,14 @@ export function getGuardLength(scopeLength: number): GuardLength {
  * 
  * @param objectiveDiameter - The objective lens diameter in mm
  * @param tubeDiameter - The tube diameter (affects height calculation for some setups)
- * @returns The recommended scope height
+ * @returns The recommended scope height (1.5", 1.75", or 2")
  */
 export function getScopeHeight(
   objectiveDiameter: number,
   tubeDiameter?: MountDiameter
 ): ScopeHeight {
   // Large tube diameters (34mm+) may need slightly higher mounts
-  const largeTubes: MountDiameter[] = ["34mm", "35mm", "36mm", "40mm"];
+  const largeTubes: MountDiameter[] = ["34mm", "40mm"];
   const tubeAdjustment = largeTubes.includes(tubeDiameter ?? "30mm") ? 2 : 0;
   const adjustedObjective = objectiveDiameter + tubeAdjustment;
 
@@ -71,19 +71,28 @@ export function getScopeHeight(
       return threshold.height;
     }
   }
-  return "extra-high";
+  return "2"; // Default to tallest height
 }
 
 /**
  * Maps scope tube diameter to ScopeSecure mount diameter
- * Direct 1:1 mapping for standard sizes
+ * Handles legacy tube sizes by mapping to nearest available size
  * 
- * @param tubeDiameter - The scope's tube diameter
- * @returns The matching mount diameter
+ * @param tubeDiameter - The scope's tube diameter (may include legacy sizes)
+ * @returns The matching mount diameter from available options
  */
-export function getMountDiameter(tubeDiameter: MountDiameter): MountDiameter {
-  // Direct mapping - ScopeSecure offers all standard tube sizes
-  return tubeDiameter;
+export function getMountDiameter(tubeDiameter: string): MountDiameter {
+  // Map legacy/uncommon tube sizes to available mount diameters
+  const diameterMap: Record<string, MountDiameter> = {
+    "1in": "1in",
+    "30mm": "30mm",
+    "34mm": "34mm",
+    "35mm": "34mm", // Map 35mm to nearest (34mm)
+    "36mm": "40mm", // Map 36mm to nearest (40mm)
+    "40mm": "40mm",
+  };
+  
+  return diameterMap[tubeDiameter] || "30mm"; // Default to 30mm if unknown
 }
 
 /**
@@ -93,10 +102,12 @@ export function getMountDiameter(tubeDiameter: MountDiameter): MountDiameter {
  * @returns The recommended ScopeSecure configuration
  */
 export function getScopeSecureConfig(scope: ScopeSpec): ScopeSecureConfig {
+  const mountDiameter = getMountDiameter(scope.tubeDiameter);
+  
   return {
     guardLength: getGuardLength(scope.overallLength),
-    scopeHeight: scope.suggestedHeight ?? getScopeHeight(scope.objectiveDiameter, scope.tubeDiameter),
-    mountDiameter: getMountDiameter(scope.tubeDiameter),
+    scopeHeight: getScopeHeight(scope.objectiveDiameter, mountDiameter),
+    mountDiameter,
   };
 }
 
@@ -112,12 +123,6 @@ export function validateConfig(config: ScopeSecureConfig): {
   requiresCustomOrder: boolean;
 } {
   const warnings: string[] = [];
-  let requiresCustomOrder = false;
-
-  if (config.guardLength === "custom") {
-    warnings.push("This scope requires a custom-length guard. Please contact us for special orders.");
-    requiresCustomOrder = true;
-  }
 
   if (config.mountDiameter === "40mm") {
     warnings.push("40mm mounts weigh slightly more than 1 pound.");
@@ -128,9 +133,9 @@ export function validateConfig(config: ScopeSecureConfig): {
   }
 
   return {
-    isValid: !requiresCustomOrder,
+    isValid: true,
     warnings,
-    requiresCustomOrder,
+    requiresCustomOrder: false,
   };
 }
 
@@ -141,34 +146,28 @@ export function validateConfig(config: ScopeSecureConfig): {
  * @returns A formatted string describing the configuration
  */
 export function getConfigSummary(config: ScopeSecureConfig): string {
-  const guardLabel = config.guardLength === "custom" 
-    ? "Custom Length" 
-    : `${config.guardLength}" Guard`;
+  const guardLabel = `${config.guardLength}" Guard`;
   
   const heightLabels: Record<ScopeHeight, string> = {
-    low: "Low",
-    medium: "Medium",
-    high: "High",
-    "extra-high": "Extra High",
+    "1.5": '1 1/2"',
+    "1.75": '1 3/4"',
+    "2": '2"',
   };
 
   const diameterLabels: Record<MountDiameter, string> = {
-    "1in": "1 inch",
+    "1in": '1"',
     "30mm": "30mm",
     "34mm": "34mm",
-    "35mm": "35mm",
-    "36mm": "36mm",
     "40mm": "40mm",
   };
 
-  return `${guardLabel}, ${heightLabels[config.scopeHeight]} Height, ${diameterLabels[config.mountDiameter]} Mount`;
+  return `${guardLabel}, ${heightLabels[config.scopeHeight]} Height, ${diameterLabels[config.mountDiameter]} Tube`;
 }
 
 /**
  * Converts guard length to numeric value in inches
  */
-export function guardLengthToNumber(guardLength: GuardLength): number | null {
-  if (guardLength === "custom") return null;
+export function guardLengthToNumber(guardLength: GuardLength): number {
   return parseInt(guardLength, 10);
 }
 
@@ -183,12 +182,12 @@ export function getAvailableGuardLengths(): GuardLength[] {
  * Gets the available scope height options
  */
 export function getAvailableScopeHeights(): ScopeHeight[] {
-  return ["low", "medium", "high", "extra-high"];
+  return ["1.5", "1.75", "2"];
 }
 
 /**
  * Gets the available mount diameter options
  */
 export function getAvailableMountDiameters(): MountDiameter[] {
-  return ["1in", "30mm", "34mm", "35mm", "36mm", "40mm"];
+  return ["1in", "30mm", "34mm", "40mm"];
 }

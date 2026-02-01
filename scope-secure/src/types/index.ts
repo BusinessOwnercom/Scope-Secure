@@ -38,19 +38,22 @@ export interface ScopeOption {
 }
 
 // Scope Configurator Types
-export type GuardLength = "9" | "11" | "13" | "14" | "15" | "17" | "custom";
-export type ScopeHeight = "low" | "medium" | "high" | "extra-high";
-export type MountDiameter = "1in" | "30mm" | "34mm" | "35mm" | "36mm" | "40mm";
+export type GuardLength = "9" | "11" | "13" | "14" | "15" | "17";
+export type ScopeHeight = "1.5" | "1.75" | "2"; // Heights in inches: 1 1/2", 1 3/4", 2"
+export type MountDiameter = "1in" | "30mm" | "34mm" | "40mm";
+
+// Legacy height values used in scope database (for backward compatibility)
+export type LegacyScopeHeight = "low" | "medium" | "high" | "extra-high";
 
 export interface ScopeSpec {
   id: string;
   brand: string;
   model: string;
   fullName: string; // Brand + Model for display
-  tubeDiameter: MountDiameter;
+  tubeDiameter: MountDiameter | "35mm" | "36mm"; // Support legacy tube sizes in database
   overallLength: number; // in inches
   objectiveDiameter: number; // in mm
-  suggestedHeight: ScopeHeight;
+  suggestedHeight?: LegacyScopeHeight; // Legacy - now calculated dynamically
   msrp?: number; // Optional MSRP for reference
 }
 

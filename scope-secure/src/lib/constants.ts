@@ -43,45 +43,37 @@ export const SCOPE_OPTIONS: ScopeOption[] = [
 
 // ScopeSecure Product Configuration Options
 export const GUARD_LENGTH_OPTIONS: GuardLengthOption[] = [
-  { value: "9", label: "9 inches", lengthInches: 9 },
-  { value: "11", label: "11 inches", lengthInches: 11 },
-  { value: "13", label: "13 inches", lengthInches: 13 },
-  { value: "14", label: "14 inches", lengthInches: 14 },
-  { value: "15", label: "15 inches", lengthInches: 15 },
-  { value: "17", label: "17 inches", lengthInches: 17 },
-  { value: "custom", label: "Custom Length", lengthInches: 0 },
+  { value: "9", label: '9"', lengthInches: 9 },
+  { value: "11", label: '11"', lengthInches: 11 },
+  { value: "13", label: '13"', lengthInches: 13 },
+  { value: "14", label: '14"', lengthInches: 14 },
+  { value: "15", label: '15"', lengthInches: 15 },
+  { value: "17", label: '17"', lengthInches: 17 },
 ];
 
 export const SCOPE_HEIGHT_OPTIONS: ScopeHeightOption[] = [
   {
-    value: "low",
-    label: "Low",
-    description: "For objectives up to 28mm"
+    value: "1.5",
+    label: '1 1/2"',
+    description: "Standard height for most scopes"
   },
   {
-    value: "medium",
-    label: "Medium",
-    description: "For 29-44mm objectives"
+    value: "1.75",
+    label: '1 3/4"',
+    description: "For larger objective lenses"
   },
   {
-    value: "high",
-    label: "High",
-    description: "For 45-52mm objectives"
-  },
-  {
-    value: "extra-high",
-    label: "Extra High",
-    description: "For 53mm+ objectives"
+    value: "2",
+    label: '2"',
+    description: "For extra-large objectives"
   },
 ];
 
 export const MOUNT_DIAMETER_OPTIONS: MountDiameterOption[] = [
-  { value: "1in", label: "1 inch (25.4mm)" },
-  { value: "30mm", label: "30mm" },
-  { value: "34mm", label: "34mm" },
-  { value: "35mm", label: "35mm" },
-  { value: "36mm", label: "36mm" },
-  { value: "40mm", label: "40mm" },
+  { value: "1in", label: '1"' },
+  { value: "30mm", label: "30 mm" },
+  { value: "34mm", label: "34 mm" },
+  { value: "40mm", label: "40 mm" },
 ];
 
 export const COMPARISON_FEATURES: ComparisonFeature[] = [

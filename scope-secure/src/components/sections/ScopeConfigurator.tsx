@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Settings, Check, AlertCircle, ShoppingCart, Ruler, MoveVertical, Circle } from "lucide-react";
+import { Settings, Check, AlertCircle, ShoppingCart, Ruler, MoveVertical, Circle, Package, Loader2 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
@@ -20,16 +20,61 @@ import { useCart } from "@/components/cart/CartProvider";
 import type { ScopeSpec, GuardLength, ScopeHeight, MountDiameter, ScopeSecureConfig } from "@/types";
 import { cn } from "@/lib/utils";
 
+interface StockStatus {
+  inStock: boolean;
+  quantity: number;
+  status: "in-stock" | "low-stock" | "out-of-stock" | "unavailable" | "loading";
+}
+
 export function ScopeConfigurator() {
   const { addItem } = useCart();
   const [selectedScope, setSelectedScope] = useState<ScopeSpec | null>(null);
   const [config, setConfig] = useState<ScopeSecureConfig>({
-    guardLength: "13",
-    scopeHeight: "medium",
-    mountDiameter: "30mm",
+    guardLength: "9",
+    scopeHeight: "1.5",
+    mountDiameter: "1in",
   });
   const [isAutoFilled, setIsAutoFilled] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [stockStatus, setStockStatus] = useState<StockStatus>({
+    inStock: true,
+    quantity: 0,
+    status: "loading",
+  });
+
+  // Check stock availability when config changes
+  const checkStock = useCallback(async () => {
+    setStockStatus((prev) => ({ ...prev, status: "loading" }));
+    
+    try {
+      const params = new URLSearchParams({
+        guardLength: config.guardLength,
+        scopeHeight: config.scopeHeight,
+        mountDiameter: config.mountDiameter,
+      });
+      
+      const response = await fetch(`/api/inventory/check?${params}`);
+      const data = await response.json();
+      
+      setStockStatus({
+        inStock: data.inStock ?? true,
+        quantity: data.quantity ?? 0,
+        status: data.status ?? "in-stock",
+      });
+    } catch {
+      // Default to in-stock if API fails (don't block sales)
+      setStockStatus({
+        inStock: true,
+        quantity: 0,
+        status: "in-stock",
+      });
+    }
+  }, [config.guardLength, config.scopeHeight, config.mountDiameter]);
+
+  // Check stock when config changes
+  useEffect(() => {
+    checkStock();
+  }, [checkStock]);
 
   // When a scope is selected, auto-fill the configuration
   useEffect(() => {
@@ -133,7 +178,7 @@ export function ScopeConfigurator() {
                     Guard Length
                   </label>
                   <div className="space-y-2">
-                    {GUARD_LENGTH_OPTIONS.filter(opt => opt.value !== "custom").map((option) => (
+                    {GUARD_LENGTH_OPTIONS.map((option) => (
                       <button
                         key={option.value}
                         onClick={() => handleConfigChange("guardLength", option.value)}
@@ -254,6 +299,30 @@ export function ScopeConfigurator() {
                       For: {selectedScope.fullName}
                     </p>
                   )}
+                  {/* Stock Status Badge */}
+                  <div className="mt-2">
+                    {stockStatus.status === "loading" ? (
+                      <span className="inline-flex items-center gap-1.5 text-xs text-warm-gray">
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                        Checking availability...
+                      </span>
+                    ) : stockStatus.status === "in-stock" ? (
+                      <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-400">
+                        <Package className="h-3 w-3" />
+                        In Stock
+                      </span>
+                    ) : stockStatus.status === "low-stock" ? (
+                      <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400">
+                        <AlertCircle className="h-3 w-3" />
+                        Low Stock - Only {stockStatus.quantity} left
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-400">
+                        <AlertCircle className="h-3 w-3" />
+                        Out of Stock
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="flex flex-col items-center md:items-end gap-2">
                   <p className="text-sm text-warm-gray">Total Price</p>
@@ -264,7 +333,7 @@ export function ScopeConfigurator() {
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                {!validation.requiresCustomOrder && (
+                {!validation.requiresCustomOrder && stockStatus.inStock && (
                   <Button
                     onClick={() => {
                       const configId = `scope-guard-${config.guardLength}-${config.scopeHeight}-${config.mountDiameter}`;
@@ -275,11 +344,17 @@ export function ScopeConfigurator() {
                     }}
                     size="lg"
                     className="flex-1"
+                    disabled={stockStatus.status === "loading"}
                   >
                     {addedToCart ? (
                       <>
                         <Check className="h-5 w-5" />
                         Added to Cart!
+                      </>
+                    ) : stockStatus.status === "loading" ? (
+                      <>
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                        Checking...
                       </>
                     ) : (
                       <>
@@ -287,6 +362,16 @@ export function ScopeConfigurator() {
                         Add to Cart
                       </>
                     )}
+                  </Button>
+                )}
+                {!stockStatus.inStock && stockStatus.status !== "loading" && (
+                  <Button
+                    href="mailto:support@scopesecure.com?subject=Stock%20Notification%20Request"
+                    variant="secondary"
+                    size="lg"
+                    className="flex-1"
+                  >
+                    Notify When Available
                   </Button>
                 )}
                 {validation.requiresCustomOrder && (
