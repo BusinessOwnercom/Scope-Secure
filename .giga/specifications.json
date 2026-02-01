@@ -1,0 +1,18 @@
+[
+  {
+    "fileName": "main-overview.mdc",
+    "description": "Complete system overview focusing on the scope protection product configuration system, database architecture, and core business logic components"
+  },
+  {
+    "fileName": "scope-matching-algorithms.mdc",
+    "description": "Detailed documentation of the core algorithms for scope-guard matching, including guard length determination, mount height calculations, and compatibility validation rules"
+  },
+  {
+    "fileName": "data-models-relationships.mdc",
+    "description": "Comprehensive documentation of the scope database structure, product configurations, and relationships between scope specifications and guard requirements"
+  },
+  {
+    "fileName": "business-rules-thresholds.mdc",
+    "description": "Documentation of critical business rules including guard length thresholds, safety margins, and custom configuration requirements based on scope measurements"
+  }
+]

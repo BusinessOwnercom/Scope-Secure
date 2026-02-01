@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:scopesecure.com)",
+      "Bash(dir /A:H \"C:\\\\Users\\\\Acer Nitro 5\\\\Desktop\\\\Active Work\\\\Scope Secure\")",
+      "Bash(powershell -Command:*)",
+      "Bash(npx create-next-app@latest:*)",
+      "Bash(npm install:*)",
+      "Bash(dir:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(cd:*)",
+      "Bash(ls -la \"C:\\\\Users\\\\Acer Nitro 5\\\\Desktop\\\\Active Work\\\\Scope Secure\\\\scope-secure\\\\src\\\\app\\\\products\"\" 2>&1 || echo \"Directory not found \")",
+      "Bash(npx next build)",
+      "Bash(npx next dev:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(taskkill:*)",
+      "Bash(ls \"C:\\\\Users\\\\Acer Nitro 5\\\\Desktop\\\\Active Work\\\\Scope Secure\\\\scope-secure\\\\src\\\\lib\\\\scopes\\\\brands\"\" && echo \"---CROSSBOW---\" && ls \"C:UsersAcer Nitro 5DesktopActive WorkScope Securescope-securesrclibscopescrossbow\"\")",
+      "Bash(node -e:*)"
+    ]
+  }
+}
