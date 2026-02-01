@@ -1,0 +1,13 @@
+# ScopeSecure Robots.txt
+User-agent: *
+Allow: /
+
+# Block private marketing dashboard
+Disallow: /marketingplan
+
+# Block API and internal routes
+Disallow: /api/
+Disallow: /_next/
+
+# Sitemaps
+# Sitemap: https://scopesecure.com/sitemap.xml

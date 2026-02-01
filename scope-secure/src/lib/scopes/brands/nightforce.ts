@@ -1,0 +1,236 @@
+import type { ScopeSpec } from "@/types";
+
+export const NIGHTFORCE_SCOPES: ScopeSpec[] = [
+  // ============================================
+  // Nightforce ATACR
+  // ============================================
+  {
+    id: "nightforce-atacr-1-8x24",
+    brand: "Nightforce",
+    model: "ATACR 1-8x24 F1",
+    fullName: "Nightforce ATACR 1-8x24 F1",
+    tubeDiameter: "34mm",
+    overallLength: 10.1,
+    objectiveDiameter: 24,
+    suggestedHeight: "low",
+    msrp: 2800,
+  },
+  {
+    id: "nightforce-atacr-4-16x42",
+    brand: "Nightforce",
+    model: "ATACR 4-16x42 F1",
+    fullName: "Nightforce ATACR 4-16x42 F1",
+    tubeDiameter: "34mm",
+    overallLength: 12.6,
+    objectiveDiameter: 42,
+    suggestedHeight: "medium",
+    msrp: 2700,
+  },
+  {
+    id: "nightforce-atacr-4-16x50",
+    brand: "Nightforce",
+    model: "ATACR 4-16x50 F1",
+    fullName: "Nightforce ATACR 4-16x50 F1",
+    tubeDiameter: "34mm",
+    overallLength: 14.0,
+    objectiveDiameter: 50,
+    suggestedHeight: "high",
+    msrp: 3000,
+  },
+  {
+    id: "nightforce-atacr-4-20x50",
+    brand: "Nightforce",
+    model: "ATACR 4-20x50 F1",
+    fullName: "Nightforce ATACR 4-20x50 F1",
+    tubeDiameter: "34mm",
+    overallLength: 14.0,
+    objectiveDiameter: 50,
+    suggestedHeight: "high",
+    msrp: 3200,
+  },
+  {
+    id: "nightforce-atacr-5-25x56",
+    brand: "Nightforce",
+    model: "ATACR 5-25x56 F1",
+    fullName: "Nightforce ATACR 5-25x56 F1",
+    tubeDiameter: "34mm",
+    overallLength: 14.3,
+    objectiveDiameter: 56,
+    suggestedHeight: "extra-high",
+    msrp: 3200,
+  },
+  {
+    id: "nightforce-atacr-7-35x56",
+    brand: "Nightforce",
+    model: "ATACR 7-35x56 F1",
+    fullName: "Nightforce ATACR 7-35x56 F1",
+    tubeDiameter: "34mm",
+    overallLength: 15.1,
+    objectiveDiameter: 56,
+    suggestedHeight: "extra-high",
+    msrp: 3600,
+  },
+
+  // ============================================
+  // Nightforce NX8
+  // ============================================
+  {
+    id: "nightforce-nx8-1-8x24",
+    brand: "Nightforce",
+    model: "NX8 1-8x24 F1",
+    fullName: "Nightforce NX8 1-8x24 F1",
+    tubeDiameter: "30mm",
+    overallLength: 8.75,
+    objectiveDiameter: 24,
+    suggestedHeight: "low",
+    msrp: 1900,
+  },
+  {
+    id: "nightforce-nx8-2.5-20x50",
+    brand: "Nightforce",
+    model: "NX8 2.5-20x50 F1",
+    fullName: "Nightforce NX8 2.5-20x50 F1",
+    tubeDiameter: "30mm",
+    overallLength: 13.1,
+    objectiveDiameter: 50,
+    suggestedHeight: "high",
+    msrp: 2200,
+  },
+  {
+    id: "nightforce-nx8-4-32x50",
+    brand: "Nightforce",
+    model: "NX8 4-32x50 F1",
+    fullName: "Nightforce NX8 4-32x50 F1",
+    tubeDiameter: "30mm",
+    overallLength: 13.78,
+    objectiveDiameter: 50,
+    suggestedHeight: "high",
+    msrp: 2400,
+  },
+
+  // ============================================
+  // Nightforce NXS (NEW)
+  // ============================================
+  {
+    id: "nightforce-nxs-3.5-15x50",
+    brand: "Nightforce",
+    model: "NXS 3.5-15x50 F1",
+    fullName: "Nightforce NXS 3.5-15x50 F1",
+    tubeDiameter: "30mm",
+    overallLength: 14.5,
+    objectiveDiameter: 50,
+    suggestedHeight: "high",
+    msrp: 2100,
+  },
+  {
+    id: "nightforce-nxs-5.5-22x50",
+    brand: "Nightforce",
+    model: "NXS 5.5-22x50",
+    fullName: "Nightforce NXS 5.5-22x50",
+    tubeDiameter: "30mm",
+    overallLength: 15.1,
+    objectiveDiameter: 50,
+    suggestedHeight: "high",
+    msrp: 2300,
+  },
+  {
+    id: "nightforce-nxs-5.5-22x56",
+    brand: "Nightforce",
+    model: "NXS 5.5-22x56",
+    fullName: "Nightforce NXS 5.5-22x56",
+    tubeDiameter: "30mm",
+    overallLength: 15.5,
+    objectiveDiameter: 56,
+    suggestedHeight: "extra-high",
+    msrp: 2400,
+  },
+
+  // ============================================
+  // Nightforce SHV
+  // ============================================
+  {
+    id: "nightforce-shv-3-10x42",
+    brand: "Nightforce",
+    model: "SHV 3-10x42",
+    fullName: "Nightforce SHV 3-10x42",
+    tubeDiameter: "30mm",
+    overallLength: 11.9,
+    objectiveDiameter: 42,
+    suggestedHeight: "medium",
+    msrp: 1100,
+  },
+  {
+    id: "nightforce-shv-4-14x50",
+    brand: "Nightforce",
+    model: "SHV 4-14x50 F1",
+    fullName: "Nightforce SHV 4-14x50 F1",
+    tubeDiameter: "30mm",
+    overallLength: 13.2,
+    objectiveDiameter: 50,
+    suggestedHeight: "high",
+    msrp: 1200,
+  },
+  {
+    id: "nightforce-shv-4-14x56",
+    brand: "Nightforce",
+    model: "SHV 4-14x56",
+    fullName: "Nightforce SHV 4-14x56",
+    tubeDiameter: "30mm",
+    overallLength: 14.0,
+    objectiveDiameter: 56,
+    suggestedHeight: "extra-high",
+    msrp: 1300,
+  },
+  {
+    id: "nightforce-shv-5-20x56",
+    brand: "Nightforce",
+    model: "SHV 5-20x56",
+    fullName: "Nightforce SHV 5-20x56",
+    tubeDiameter: "30mm",
+    overallLength: 15.2,
+    objectiveDiameter: 56,
+    suggestedHeight: "extra-high",
+    msrp: 1400,
+  },
+
+  // ============================================
+  // Nightforce Competition (NEW)
+  // ============================================
+  {
+    id: "nightforce-competition-15-55x52",
+    brand: "Nightforce",
+    model: "Competition 15-55x52",
+    fullName: "Nightforce Competition 15-55x52",
+    tubeDiameter: "30mm",
+    overallLength: 16.5,
+    objectiveDiameter: 52,
+    suggestedHeight: "high",
+    msrp: 2800,
+  },
+
+  // ============================================
+  // Nightforce Benchrest (NEW)
+  // ============================================
+  {
+    id: "nightforce-benchrest-8-32x56",
+    brand: "Nightforce",
+    model: "Benchrest 8-32x56",
+    fullName: "Nightforce Benchrest 8-32x56",
+    tubeDiameter: "30mm",
+    overallLength: 16.4,
+    objectiveDiameter: 56,
+    suggestedHeight: "extra-high",
+    msrp: 2200,
+  },
+  {
+    id: "nightforce-benchrest-12-42x56",
+    brand: "Nightforce",
+    model: "Benchrest 12-42x56",
+    fullName: "Nightforce Benchrest 12-42x56",
+    tubeDiameter: "30mm",
+    overallLength: 16.9,
+    objectiveDiameter: 56,
+    suggestedHeight: "extra-high",
+    msrp: 2400,
+  },
+];
