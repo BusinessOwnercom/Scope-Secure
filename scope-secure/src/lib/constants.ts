@@ -23,8 +23,6 @@ export const NAV_LINKS = [
   { label: "Features", href: "#features" },
   { label: "Reviews", href: "#reviews" },
   { label: "Finishes", href: "#finishes" },
-  { label: "Ammo Club", href: "/products/bullet-subscription" },
-  { label: "Cases", href: "/products/heavy-duty-case" },
   { label: "FAQ", href: "#faq" },
 ] as const;
 

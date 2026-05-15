@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { useCart } from "./CartProvider";
 import { PRODUCTS } from "@/lib/constants";
 
-const UPSELL_PRODUCT_IDS = ["bullet-subscription", "heavy-duty-case"] as const;
+const UPSELL_PRODUCT_IDS = [] as const;
 
 export function UpsellSection() {
   const { state, addItem } = useCart();
